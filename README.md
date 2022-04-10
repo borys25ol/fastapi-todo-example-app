@@ -93,3 +93,67 @@ Expected result:
   "message": "FastAPI Todo Application"
 }
 ```
+
+
+Web routes
+----------
+All routes are available on ``/`` or ``/redoc`` paths with Swagger or ReDoc.
+
+
+Project structure
+-----------------
+Files related to application are in the ``main`` directory.
+Application parts are:
+```text
+main
+├── __init__.py
+├── api
+│   ├── __init__.py
+│   └── v1
+│       ├── __init__.py
+│       ├── router.py
+│       └── routes
+│           ├── __init__.py
+│           ├── status.py
+│           ├── tasks.py
+│           └── user.py
+├── app.py
+├── core
+│   ├── __init__.py
+│   ├── config.py
+│   ├── dependencies.py
+│   ├── exceptions.py
+│   ├── logging.py
+│   └── settings
+│       ├── __init__.py
+│       ├── app.py
+│       └── base.py
+├── db
+│   ├── __init__.py
+│   ├── base.py
+│   ├── migrations
+│   │   ├── env.py
+│   │   ├── script.py.mako
+│   │   └── versions
+│   │       └── 502fb6cff953_auto_migrations.py
+│   ├── repositories
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── tasks.py
+│   │   └── users.py
+│   └── tables.py
+├── schemas
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── response.py
+│   ├── status.py
+│   └── tasks.py
+├── services
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── security.py
+│   └── tasks.py
+└── utils
+    ├── __init__.py
+    └── tasks.py
+```
