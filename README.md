@@ -68,7 +68,7 @@ Run server with settings:
     $ make runserver
 
 Register user:
-    
+
     $ curl -X 'POST' \
         'http://0.0.0.0:5000/api/v1/user' \
         -H 'accept: application/json' \
