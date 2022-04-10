@@ -1,0 +1,11 @@
+# python 3.10.4
+
+alembic==1.7.7
+fastapi==0.70.1
+passlib[bcrypt]==1.7.4
+psycopg2-binary==2.9.3
+pydantic[email]==1.9.0
+python-dotenv==0.19.2
+SQLAlchemy==1.4.35
+sqlalchemy-stubs==0.4
+uvicorn==0.16.0

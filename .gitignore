@@ -1,0 +1,14 @@
+.ve
+.idea
+.DS_Store
+__pycache__
+*.pyc
+logs
+.env
+.env.test
+.env.dev
+*.db
+.vscode
+.coverage
+main/db/migrations/versions/*.py
+postgres-data
