@@ -60,7 +60,7 @@ def get_current_active_user(
     """
     Return current active user.
     """
-    if not user_service.user_is_active(user=current_user):
+    if not user_service.check_is_active(user=current_user):
         raise InactiveUserAccountException(
             message="Inactive user", status_code=HTTP_400_BAD_REQUEST
         )

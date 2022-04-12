@@ -73,7 +73,7 @@ class UserService:
             )
         return user
 
-    def user_is_active(self, user: User) -> bool:
+    def check_is_active(self, user: User) -> bool:
         """
         Check if user account is active.
         """
