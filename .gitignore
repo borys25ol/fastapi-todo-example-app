@@ -10,5 +10,4 @@ logs
 *.db
 .vscode
 .coverage
-main/db/migrations/versions/*.py
 postgres-data
