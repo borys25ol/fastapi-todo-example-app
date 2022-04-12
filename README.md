@@ -58,9 +58,8 @@ For remove virtualenv:
 
 Local run
 -------------
-Make migration to create tables
+Run migration to create tables
 
-    $ make migration message="Create tables"
     $ make migrate
 
 Run server with settings:
@@ -124,6 +123,7 @@ main
 │   ├── dependencies.py
 │   ├── exceptions.py
 │   ├── logging.py
+│   ├── security.py
 │   └── settings
 │       ├── __init__.py
 │       ├── app.py
@@ -131,29 +131,33 @@ main
 ├── db
 │   ├── __init__.py
 │   ├── base.py
+│   ├── base_class.py
 │   ├── migrations
 │   │   ├── env.py
 │   │   ├── script.py.mako
 │   │   └── versions
-│   │       └── 502fb6cff953_auto_migrations.py
+│   │       └── dfb75cfbf652_create_tables.py
 │   ├── repositories
 │   │   ├── __init__.py
 │   │   ├── base.py
 │   │   ├── tasks.py
 │   │   └── users.py
-│   └── tables.py
+│   └── session.py
+├── models
+│   ├── __init__.py
+│   ├── task.py
+│   └── user.py
 ├── schemas
 │   ├── __init__.py
-│   ├── auth.py
 │   ├── response.py
 │   ├── status.py
-│   └── tasks.py
+│   ├── tasks.py
+│   └── user.py
 ├── services
 │   ├── __init__.py
-│   ├── auth.py
-│   ├── security.py
-│   └── tasks.py
+│   └── user.py
 └── utils
     ├── __init__.py
     └── tasks.py
+
 ```
