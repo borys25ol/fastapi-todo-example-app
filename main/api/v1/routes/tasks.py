@@ -10,10 +10,11 @@ from main.core.dependencies import (
     get_current_task,
     get_current_user,
 )
-from main.db.tables import User
+from main.db.repositories.tasks import TasksRepository, get_tasks_repository
+from main.models.task import Task
+from main.models.user import User
 from main.schemas.response import Response
-from main.schemas.tasks import Task, TaskInCreate, TaskInDB, TaskInUpdate
-from main.services.tasks import TasksService
+from main.schemas.tasks import TaskInCreate, TaskInDB, TaskInUpdate
 
 router = APIRouter(dependencies=[Depends(basic_security)])
 
@@ -22,13 +23,13 @@ router = APIRouter(dependencies=[Depends(basic_security)])
 def get_all_task(
     skip: int = 0,
     limit: int = 100,
-    service: TasksService = Depends(),
+    tasks_repo: TasksRepository = Depends(get_tasks_repository),
     current_user: User = Depends(get_current_user),
 ) -> Response:
     """
     Retrieve all tasks.
     """
-    tasks = service.get_all_owner_tasks(
+    tasks = tasks_repo.get_all_by_owner(
         owner_id=current_user.id, skip=skip, limit=limit
     )
     return Response(data=tasks)
@@ -45,13 +46,13 @@ def get_task(task: Task = Depends(get_current_task)) -> Response:
 @router.post("", response_model=Response[TaskInDB], status_code=HTTP_201_CREATED)
 def create_task(
     task: TaskInCreate,
-    service: TasksService = Depends(),
+    tasks_repo: TasksRepository = Depends(get_tasks_repository),
     current_user: User = Depends(get_current_active_user),
 ) -> Response:
     """
     Create new task.
     """
-    task = service.insert_task(task=task, owner_id=current_user.id)
+    task = tasks_repo.create_with_owner(obj_create=task, owner_id=current_user.id)
     return Response(data=task, message="The task was created successfully")
 
 
@@ -59,21 +60,22 @@ def create_task(
 def update_task(
     task_in_update: TaskInUpdate,
     task: Task = Depends(get_current_task),
-    service: TasksService = Depends(),
+    tasks_repo: TasksRepository = Depends(get_tasks_repository),
 ) -> Response:
     """
     Update task by `task_id`.
     """
-    task = service.update_task(task=task, task_update=task_in_update)
+    task = tasks_repo.update(obj=task, obj_update=task_in_update)
     return Response(data=task, message="The task was updated successfully")
 
 
 @router.delete("/{task_id}", response_model=Response[TaskInDB])
 def delete_task(
-    task: Task = Depends(get_current_task), service: TasksService = Depends()
+    task: Task = Depends(get_current_task),
+    tasks_repo: TasksRepository = Depends(get_tasks_repository),
 ) -> Response:
     """
     Delete task by `task_id`.
     """
-    task = service.delete_task(task=task)
+    task = tasks_repo.delete(obj_id=task.id)
     return Response(data=task, message="The task was deleted successfully")

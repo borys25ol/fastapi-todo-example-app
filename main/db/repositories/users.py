@@ -4,10 +4,10 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from main.core.config import get_app_settings
-from main.db.base import get_db
 from main.db.repositories.base import BaseRepository
-from main.db.tables import User
-from main.schemas.auth import UserInCreate, UserInUpdate
+from main.db.session import get_db
+from main.models.user import User
+from main.schemas.user import UserInCreate, UserInUpdate
 
 settings = get_app_settings()
 

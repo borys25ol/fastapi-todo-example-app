@@ -4,9 +4,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from main.db.base import Base
-from main.db.tables import Task
-from main.schemas.tasks import TaskInCreate, TaskInUpdate
+from main.db.base_class import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -19,6 +17,12 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     """
 
     def __init__(self, db: Session, model: Type[ModelType]) -> None:
+        """
+        CRUD object with default methods to Create, Read, Update, Delete (CRUD).
+
+        :param db: A SQLAlchemy Session object.
+        :param model: A SQLAlchemy model class.
+        """
         self.db = db
         self.model = model
 
@@ -32,7 +36,7 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         Get object by `id` field.
         """
-        return self.db.query(self.model).filter(self.model.id == obj_id).first()  # type: ignore
+        return self.db.query(self.model).filter(self.model.id == obj_id).first()
 
     def create(self, obj_create: CreateSchemaType) -> ModelType:
         """

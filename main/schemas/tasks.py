@@ -11,11 +11,9 @@ class Task(TaskBase):
 
 
 class TaskInDB(Task):
-    owner_id: int
-
     class Config:
         orm_mode = True
-        fields_order = ["id", "owner_id", "title", "done"]
+        fields_order = ["id", "title", "done"]
 
     @root_validator
     def reorder(cls, values: dict) -> dict:

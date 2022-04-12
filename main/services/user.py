@@ -10,32 +10,23 @@ from main.core.exceptions import (
     UserNotFoundException,
 )
 from main.core.logging import logger
+from main.core.security import get_basic_auth_token, verify_password
 from main.db.repositories.users import UsersRepository, get_users_repository
-from main.db.tables import User
-from main.schemas.auth import UserInCreate, UserLogin, UserToken
-from main.services.security import get_basic_auth_token, verify_password
+from main.models.user import User
+from main.schemas.user import UserInCreate, UserLogin, UserToken
 
 
-class BasicAuthService:
-    """
-    Basic Auth service.
-    """
-
-    def __init__(self, db: UsersRepository = Depends(get_users_repository)) -> None:
-        self.db = db
-
-    def get_user(self, credentials: HTTPBasicCredentials) -> Optional[User]:
-        """
-        Retrieve current user info by login credentials.
-        """
-        logger.info(f"Getting user: {credentials.username}")
-        return self.db.get_by_username(username=credentials.username)
+class UserService:
+    def __init__(
+        self, user_repo: UsersRepository = Depends(get_users_repository)
+    ) -> None:
+        self.user_repo = user_repo
 
     def login_user(self, user: UserLogin) -> UserToken:
         """
         Authenticate user with provided credentials.
         """
-        logger.info(f"Authenticating user: {user.username}")
+        logger.info(f"Try to login user: {user.username}")
         self.authenticate(username=user.username, password=user.password)
         return UserToken(
             token=get_basic_auth_token(username=user.username, password=user.password)
@@ -46,21 +37,29 @@ class BasicAuthService:
         Register user in application.
         """
         logger.info(f"Try to find user: {user_create.username}")
-        db_user = self.db.get_by_username(username=user_create.username)
+        db_user = self.user_repo.get_by_username(username=user_create.username)
         if db_user:
             raise UserAlreadyExistException(
                 message=f"User with username: `{user_create.username}` already exists",
                 status_code=HTTP_401_UNAUTHORIZED,
             )
         logger.info(f"Creating user: {user_create.username}")
-        user = self.db.create(obj_create=user_create)
+        user = self.user_repo.create(obj_create=user_create)
         return user
+
+    def get_user(self, credentials: HTTPBasicCredentials) -> Optional[User]:
+        """
+        Retrieve current user info by login credentials.
+        """
+        logger.info(f"Getting user: {credentials.username}")
+        return self.user_repo.get_by_username(username=credentials.username)
 
     def authenticate(self, username: str, password: str) -> User:
         """
         Authenticate user.
         """
-        user = self.db.get_by_username(username=username)
+        logger.info(f"Try to authenticate user: {username}")
+        user = self.user_repo.get_by_username(username=username)
         if not user:
             raise UserNotFoundException(
                 message=f"User with username: `{username}` not found",
@@ -73,3 +72,9 @@ class BasicAuthService:
                 message="Invalid credentials", status_code=HTTP_401_UNAUTHORIZED
             )
         return user
+
+    def user_is_active(self, user: User) -> bool:
+        """
+        Check if user account is active.
+        """
+        return self.user_repo.is_active(user=user)

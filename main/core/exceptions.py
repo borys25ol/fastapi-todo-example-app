@@ -27,12 +27,9 @@ class BaseInternalException(Exception):
     Base error class for inherit all internal errors.
     """
 
-    def __init__(
-        self, message: str, status_code: int, errors: Optional[List[str]] = None
-    ) -> None:
+    def __init__(self, message: str, status_code: int) -> None:
         self.message = message
         self.status_code = status_code
-        self.errors = errors
 
 
 class TaskNotFoundException(BaseInternalException):
@@ -87,7 +84,6 @@ def add_internal_exception_handler(app: FastAPI) -> None:
                 "status": exc.status_code,
                 "type": type(exc).__name__,
                 "message": exc.message,
-                "errors": exc.errors or [],
             },
         )
 
@@ -146,7 +142,6 @@ def add_http_exception_handler(app: FastAPI) -> None:
                 "status": exc.status_code,
                 "type": "HTTPException",
                 "message": exc.detail,
-                "errors": [],
             },
         )
 
@@ -165,7 +160,6 @@ def add_internal_server_error_handler(app: FastAPI) -> None:
                 "status": HTTP_500_INTERNAL_SERVER_ERROR,
                 "type": "HTTPException",
                 "message": "Internal Server Error",
-                "errors": [],
             },
         )
 

@@ -12,34 +12,24 @@ from main.core.exceptions import (
     UserPermissionException,
 )
 from main.db.repositories.tasks import TasksRepository, get_tasks_repository
-from main.db.tables import Task, User
-from main.services.auth import BasicAuthService
+from main.models.task import Task
+from main.models.user import User
+from main.services.user import UserService
 
 basic_security = HTTPBasic()
 
 
 def get_current_user(
-    auth_service: BasicAuthService = Depends(),
+    user_service: UserService = Depends(),
     credentials: HTTPBasicCredentials = Depends(basic_security),
 ) -> User:
     """
     Return current user.
     """
-    user = auth_service.authenticate(
+    user = user_service.authenticate(
         username=credentials.username, password=credentials.password
     )
     return user
-
-
-def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
-    """
-    Return current active user.
-    """
-    if not current_user.is_active:
-        raise InactiveUserAccountException(
-            message="Inactive user", status_code=HTTP_400_BAD_REQUEST
-        )
-    return current_user
 
 
 def get_current_task(
@@ -61,3 +51,17 @@ def get_current_task(
             message="Not enough permissions", status_code=HTTP_403_FORBIDDEN
         )
     return task
+
+
+def get_current_active_user(
+    user_service: UserService = Depends(),
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """
+    Return current active user.
+    """
+    if not user_service.user_is_active(user=current_user):
+        raise InactiveUserAccountException(
+            message="Inactive user", status_code=HTTP_400_BAD_REQUEST
+        )
+    return current_user
