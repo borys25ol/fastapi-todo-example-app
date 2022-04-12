@@ -62,6 +62,10 @@ Run migration to create tables
 
     $ make migrate
 
+Run pre-start script to check database:
+
+    $  make check_db
+
 Run server with settings:
 
     $ make runserver

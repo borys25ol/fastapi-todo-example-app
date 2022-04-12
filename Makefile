@@ -8,6 +8,9 @@ ve:
 clean:
 	test -d .ve && rm -rf .ve
 
+check_db:
+	 python ./main/backend_pre_start.py
+
 runserver:
 	 uvicorn main.app:app --host 0.0.0.0 --port 5000 --reload
 

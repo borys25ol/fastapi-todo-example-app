@@ -8,4 +8,5 @@ pydantic[email]==1.9.0
 python-dotenv==0.19.2
 SQLAlchemy==1.4.35
 sqlalchemy-stubs==0.4
+tenacity==8.0.1
 uvicorn==0.16.0
