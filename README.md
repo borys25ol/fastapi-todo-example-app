@@ -27,10 +27,22 @@ Then see `Configuration` section
 
 You can also use these commands during dev process:
 
-- to run mypy checks
-
+- To run mypy checks
 
       $ make types
+
+- To run flake8 checks
+
+      $ make style
+
+- To run black checks:
+
+      $ make format
+
+- To run together:
+
+      $ make lint
+
 
 Configuration
 --------------
