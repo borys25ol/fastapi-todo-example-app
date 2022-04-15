@@ -30,6 +30,9 @@ style:
 types:
 	mypy --namespace-packages -p "main" --config-file setup.cfg
 
+format:
+	black main --check
+
 lint:
 	flake8 main && isort main --diff && black main --check && mypy --namespace-packages -p "main" --config-file setup.cfg
 
