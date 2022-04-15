@@ -47,11 +47,9 @@ Local install
 
 Setup and activate a python3 virtualenv via your preferred method. e.g. and install production requirements:
 
-
     $ make ve
 
 For remove virtualenv:
-
 
     $ make clean
 
@@ -69,6 +67,10 @@ Run pre-start script to check database:
 Run server with settings:
 
     $ make runserver
+
+Or run project in docker:
+
+    $ make docker_up
 
 Register user:
 
