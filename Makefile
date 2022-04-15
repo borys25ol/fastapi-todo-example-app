@@ -14,6 +14,9 @@ check_db:
 runserver:
 	 uvicorn main.app:app --host 0.0.0.0 --port 5000 --reload
 
+runserver_docker:
+	 uvicorn main.app:app --host 0.0.0.0 --port 5000
+
 install_hooks:
 	pip install -r requirements-ci.txt; \
 	pre-commit install; \
@@ -32,3 +35,18 @@ migration:
 
 migrate:
 	alembic upgrade head
+
+docker_build:
+	docker-compose up -d --build
+
+docker_up:
+	docker-compose up -d
+
+docker_start:
+	docker-compose start
+
+docker_down:
+	docker-compose down
+
+docker_remove_dangling_images:
+	docker images --filter "dangling=true" -q --no-trunc | xargs docker rmi

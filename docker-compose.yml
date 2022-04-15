@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: fastapi-todo-app
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - ./:/app
+    ports:
+      - 127.0.0.1:5000:5000
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    container_name: fastapi-todo-db
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    restart: always
+    ports:
+      - 127.0.0.1:5432:5432
+    environment:
+      - POSTGRES_DB=tododb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:

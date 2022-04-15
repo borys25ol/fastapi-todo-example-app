@@ -1,0 +1,12 @@
+.ve
+.cache
+.idea
+.git
+.DS_Store
+__pycache__
+logs
+*.db
+*.pyc
+*.pyo
+db.sqlite3
+.coverage
