@@ -39,7 +39,11 @@ Replace `.env.example` with real `.env`, changing placeholders
 
 ```
 SECRET_KEY=changeme
-DATABASE_URL=sqlite:///todo.db
+POSTGRES_PORT=5432
+POSTGRES_DB=tododb
+POSTGRES_PASSWORD=postgres
+POSTGRES_USER=postgres
+DATABASE_URL=postgresql://postgres:postgres@db:5432/tododb
 ```
 
 Local install
