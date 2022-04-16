@@ -113,7 +113,7 @@ Stop project in Docker:
             "username": "test-user",
             "email": "test@test.com",
             "full_name": "Test Test",
-            "password": "weekpassword"
+            "password": "weakpassword"
         }'
 
 If everything is fine, check this endpoint:
