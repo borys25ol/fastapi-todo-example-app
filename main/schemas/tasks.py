@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel, Field, root_validator
 
 
@@ -26,3 +28,7 @@ class TaskInCreate(BaseModel):
 
 class TaskInUpdate(TaskBase):
     ...
+
+
+class TasksInDelete(BaseModel):
+    ids: List[int]

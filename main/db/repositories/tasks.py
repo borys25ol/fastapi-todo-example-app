@@ -41,6 +41,19 @@ class TasksRepository(BaseRepository[Task, TaskInCreate, TaskInUpdate]):
         self.db.refresh(obj)
         return obj
 
+    def delete_many_by_owner(self, obj_ids: List[int], owner_id: int) -> List[int]:
+        """
+        Bulk delete objects.
+        """
+        query = (
+            self.db.query(self.model)
+            .filter(Task.owner_id == owner_id)
+            .filter(self.model.id.in_(obj_ids))
+        )
+        query.delete(synchronize_session=False)
+        self.db.commit()
+        return obj_ids
+
 
 def get_tasks_repository(session: Session = Depends(get_db)) -> TasksRepository:
     return TasksRepository(db=session, model=Task)

@@ -14,7 +14,7 @@ from main.db.repositories.tasks import TasksRepository, get_tasks_repository
 from main.models.task import Task
 from main.models.user import User
 from main.schemas.response import Response
-from main.schemas.tasks import TaskInCreate, TaskInDB, TaskInUpdate
+from main.schemas.tasks import TaskInCreate, TaskInDB, TaskInUpdate, TasksInDelete
 
 router = APIRouter(dependencies=[Depends(basic_security)])
 
@@ -79,3 +79,18 @@ def delete_task(
     """
     task = tasks_repo.delete(obj_id=task.id)
     return Response(data=task, message="The task was deleted successfully")
+
+
+@router.delete("", response_model=Response[TasksInDelete])
+def delete_tasks(
+    tasks: TasksInDelete,
+    tasks_repo: TasksRepository = Depends(get_tasks_repository),
+    current_user: User = Depends(get_current_active_user),
+) -> Response:
+    """
+    Bulk delete tasks.
+    """
+    tasks = tasks_repo.delete_many_by_owner(obj_ids=tasks.ids, owner_id=current_user.id)
+    return Response(
+        data=TasksInDelete(ids=tasks), message="The tasks was deleted successfully"
+    )
