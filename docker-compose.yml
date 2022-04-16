@@ -23,7 +23,7 @@ services:
       dockerfile: ./docker/db/Dockerfile
     restart: always
     ports:
-      - 127.0.0.1:${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
