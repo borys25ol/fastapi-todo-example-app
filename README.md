@@ -12,14 +12,15 @@ FastAPI example ToDo Application with user authentication.
 
 ### Stack:
 - FastAPI
+- PostgreSQL
 - SQLAlchemy
 - Alembic
+- Docker
 
 Developing
 -----------
 
 Install pre-commit hooks to ensure code quality checks and style checks
-
 
     $ make install_hooks
 
@@ -55,7 +56,7 @@ POSTGRES_PORT=5432
 POSTGRES_DB=tododb
 POSTGRES_PASSWORD=postgres
 POSTGRES_USER=postgres
-DATABASE_URL=postgresql://postgres:postgres@db:5432/tododb
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/tododb
 ```
 
 Local install
@@ -84,11 +85,25 @@ Run server with settings:
 
     $ make runserver
 
-Or run project in docker:
 
-    $ make docker_up
+Run in Docker
+-------------
 
-Register user:
+### !! Note:
+
+If you want to run app in `Docker`, change host in `DATABASE_URL` in `.env` file to name of docker db service:
+
+`DATABASE_URL=postgresql://postgres:postgres@db:5432/tododb`
+
+Run project in Docker:
+
+    $ make docker_build
+
+Stop project in Docker:
+
+    $ make docker_down
+
+## Register user:
 
     $ curl -X 'POST' \
         'http://0.0.0.0:5000/api/v1/user' \
@@ -181,5 +196,4 @@ main
 └── utils
     ├── __init__.py
     └── tasks.py
-
 ```
